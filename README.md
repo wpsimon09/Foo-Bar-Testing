@@ -134,9 +134,22 @@ For _create, index, show_
 For _404/ non existent page_
 
 - create a new user 
-- set reponse to be acting as user
-- make a get reqest to some wierd url
+- set response to be acting as user
+- make a get request to some wierd url
 - check if the status of response if 404
-
+---
 ## Showcase that git push will trigger tests
+![img.png](img.png)
+
+
+## Evaluation
+
+Our test can detect wrong input from the user which is most crucial part of the application 
+as well as they can detect wrong routes and uncorrected views returned by method
+Furthermore test can also check the registration and crud process which can be 
+really annoying to do by hand
+
+Our tests do not cover login procedure because there was no user story created for it
+
+It did not improve quality of our code because our test are not checking for mistakes made by programmer rather than mistakes made by user
 
