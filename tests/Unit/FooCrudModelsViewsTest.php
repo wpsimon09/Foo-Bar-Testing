@@ -39,4 +39,12 @@ class FooCrudModelsViewsTest extends TestCase
         $response = $this->get(route('foos.edit', $foo));
         $response->assertViewIs('foos.edit');
     }
+    public function test_that_unknown_url_returns_404(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user);
+        $response = $this->get("/there-is-no-way-that-this-url-will-ever-exits-like-my-will-to-live");
+        $response->assertStatus(404);
+    }
 }

@@ -28,26 +28,34 @@
 ---
 
 > Happy path
-
-### Arrange: 
-create a new user 
-
-### Act
-make a post request to the server to with the user that was crated
-
-### Assert
-We will check if the server responded with code 200 and if the new user was indeed created in the users table
+- make a post request to the ``/`` which will trigger ``store`` function inside LoginRegister controller
+  - the post request body will contain what would user enter in the create form
+- we will check if respond has status ``302``
+- we will check if the session has no errors
+- we will check if the function returned redirect to the ``/dashboard``
 
 > Unhappy path
-### Arrange:
-we will not create a new user nor login one
+- make a post request to the ``/`` which will trigger ``store`` function inside LoginRegister controller
+    - the post request body will contain what would user enter in the create form however with some mistakes
 
-### Act
-make a get request 
+**Not matching passwords**
+    
+- entered password are not matching
+- check if session has error on password
 
-### Assert
-We will check if the server responded with code 200 and if the new user was indeed created in the users table
+**Already taken e-mail**
 
+- create a new user
+- in the body of request we will enter email of the previously created user
+- check if session has error on email
+
+**Empty required field**
+- in the post request body we will pass an empty array 
+- check if the session has error on email, password, name
+
+with this approach we can test every required field at once
+
+___
 
 ### As a user I want to create a new FOO so that I can have my FOOS up to date
 ### Happy path
@@ -69,4 +77,66 @@ We will check if the server responded with code 200 and if the new user was inde
 > **And**: User fills in the create form without filling in the required field
 
 > **And**: User will be asked to filled in the required fields
+
+### How we will test it
+
+---
+### Feature test
+> Happy path
+
+- create a new user using factory
+- set response to be acting as a newly created user 
+- make a post request to the ``/foos`` which will trigger ``store`` method inside foos controller
+  - request body will be what would user enter to form when creating a new foo in GUI
+- we will check if the request status is _302_
+- we will check if the session has no erros
+- we will check if the database contains our newly created foo
+
+> Unhappy path
+
+- create a new user using factory
+- set response to be acting as a newly created user
+- make a post request to the ``/foos`` which will trigger ``stroe`` method inside foos controller
+    - request body will be what would user enter to form when creating a new foo in GUI but with required filed empty and number field as string
+- we will check if session has errors on bar and happiness
+
+### Unit tests
+
+> Foo model isHappy method 
+
+this method should return true or false when happiness of given foo is bigger or equal to 10
+
+**How to test it**
+
+_For true_
+
+- create a new foo with the happiness value of 20
+- check if the method returns true
+
+_For false_
+
+- create a new foo with the happiness value of 2
+- check if the method returns false
+
+> Are foo model functions returning right views
+
+**How to test it**
+
+For _create, index, show_
+
+- create a new user
+- set response to be acting as user 
+- make a get request to the appropriate route
+- and check if the returned view is what you expect it to be 
+
+>**NOTE**: during show you have to create a new foo and pass it to the get request as well
+
+For _404/ non existent page_
+
+- create a new user 
+- set reponse to be acting as user
+- make a get reqest to some wierd url
+- check if the status of response if 404
+
+## Showcase that git push will trigger tests
 
