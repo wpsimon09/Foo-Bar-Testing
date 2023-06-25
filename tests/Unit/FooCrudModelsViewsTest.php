@@ -39,6 +39,4 @@ class FooCrudModelsViewsTest extends TestCase
         $response = $this->get(route('foos.edit', $foo));
         $response->assertViewIs('foos.edit');
     }
-
-
 }
